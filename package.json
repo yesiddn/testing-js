@@ -6,6 +6,11 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "jest": {
+    "transform": {
+      "^.+\\.[t|j]sx?$": "babel-jest"
+    }
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/yesiddn/testing-js.git"
@@ -15,5 +20,9 @@
   "bugs": {
     "url": "https://github.com/yesiddn/testing-js/issues"
   },
-  "homepage": "https://github.com/yesiddn/testing-js#readme"
+  "homepage": "https://github.com/yesiddn/testing-js#readme",
+  "devDependencies": {
+    "@babel/core": "^7.24.7",
+    "@babel/preset-env": "^7.24.7"
+  }
 }
