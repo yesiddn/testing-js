@@ -6,6 +6,11 @@
   "scripts": {
     "test": "jest"
   },
+  "jest": {
+    "transform": {
+      "^.+\\.[t|j]sx?$": "babel-jest"
+    }
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/yesiddn/testing-js.git"
@@ -17,6 +22,7 @@
   },
   "homepage": "https://github.com/yesiddn/testing-js#readme",
   "devDependencies": {
+    "@babel/preset-env": "^7.24.7",
     "jest": "^29.7.0"
   }
 }
