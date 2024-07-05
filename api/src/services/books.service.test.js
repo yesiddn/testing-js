@@ -12,14 +12,25 @@ const fakeBooks = [
   }
 ];
 
+const mockSpyGetAll = jest.fn(); // el spy debe llevar un prefijo mock para identificarlo
+
 // se crea un stub para simular el comportamiento de la BD
-const MongoLibStub = {
-  getAll: async () => [...fakeBooks],
-  create: async () => { }
-}
+// const MongoLibStub = {
+//   getAll: mockSpyGetAll,
+//   create: async () => { }
+// }
 
 // cuando BooksService se importe, se va a reemplazar el constructor de MongoLib por MongoLibStub y los métodos que seran usados son los de MongoLibStub
-jest.mock('../lib/mongo.lib.js', () => jest.fn().mockImplementation(() => MongoLibStub)); // se pasa el path del archivo a mockear y una función que retorna el stub
+// jest.mock('../lib/mongo.lib.js', () => jest.fn().mockImplementation(() => MongoLibStub)); // se pasa el path del archivo a mockear y una función que retorna el stub
+// ahora generara error porque los mocks se deben guardar en una carpeta aparte y jest lee los mocks antes de ejecutar los tests por lo que el error que se genera es: Cannot access to 'spyGetAll' before initialization
+
+jest.mock('../lib/mongo.lib.js', () => jest.fn().mockImplementation(() => {
+  return {
+    getAll: mockSpyGetAll,
+    create: async () => { }
+  } // forma temporal de solucionar el error
+}));
+
 
 describe('Test for BooksService', () => {
   let service;
@@ -32,11 +43,16 @@ describe('Test for BooksService', () => {
   describe('Test for getBooks', () => {
     test('should return an array of books', async () => {
       // Arrange
+      // spyGetAll.mockReturnValue(fakeBooks); // retorna directamente la fake data pero como getBooks es async, se debe usar mockResolvedValue
+      mockSpyGetAll.mockResolvedValue(fakeBooks); // de esta forma la data puede ser diferente para cada test
       // Act
       const books = await service.getBooks({});
       console.log(books);
       // Assert
       expect(books.length).toBe(2);
+      expect(mockSpyGetAll).toHaveBeenCalled(); // verifica que el método haya sido llamado
+      expect(mockSpyGetAll).toHaveBeenCalledTimes(1); // verifica que el método haya sido llamado una sola vez o el número de veces que se necesite
+      expect(mockSpyGetAll).toHaveBeenCalledWith('books', {}); // verifica que el método haya sido llamado con los argumentos esperados
     });
   });
 });
