@@ -1,4 +1,4 @@
-import globals from "globals";
+import globals, { jest } from "globals";
 import pluginJs from "@eslint/js";
 
 export default [
@@ -12,6 +12,7 @@ export default [
   {
     languageOptions: {
       globals: {
+        jest: globals.jest,
         test: globals.jest.test,
         expect: globals.jest.expect,
       },

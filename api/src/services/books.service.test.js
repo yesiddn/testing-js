@@ -1,16 +1,17 @@
+const { generateManyBooks } = require('../fakes/book.fake');
 const BooksService = require('./books.service');
 
 // se genera fake data para simular la respuesta de la BD
-const fakeBooks = [
-  {
-    _id: '60f7b3b3b3b3b3b3b3b3b3b3',
-    name: 'Harry Potter',
-  },
-  {
-    _id: '60f7b3b3b3b3b3b3b3b3b3',
-    name: 'The Witcher',
-  }
-];
+// const fakeBooks = [
+//   {
+//     _id: '60f7b3b3b3b3b3b3b3b3b3b3',
+//     name: 'Harry Potter',
+//   },
+//   {
+//     _id: '60f7b3b3b3b3b3b3b3b3b3',
+//     name: 'The Witcher',
+//   }
+// ];
 
 const mockSpyGetAll = jest.fn(); // el spy debe llevar un prefijo mock para identificarlo
 
@@ -43,16 +44,19 @@ describe('Test for BooksService', () => {
   describe('Test for getBooks', () => {
     test('should return an array of books', async () => {
       // Arrange
+      const fakeBooks = generateManyBooks(5);
       // spyGetAll.mockReturnValue(fakeBooks); // retorna directamente la fake data pero como getBooks es async, se debe usar mockResolvedValue
       mockSpyGetAll.mockResolvedValue(fakeBooks); // de esta forma la data puede ser diferente para cada test
       // Act
       const books = await service.getBooks({});
       console.log(books);
       // Assert
-      expect(books.length).toBe(2);
+      expect(books.length).toBe(fakeBooks.length);
       expect(mockSpyGetAll).toHaveBeenCalled(); // verifica que el método haya sido llamado
       expect(mockSpyGetAll).toHaveBeenCalledTimes(1); // verifica que el método haya sido llamado una sola vez o el número de veces que se necesite
       expect(mockSpyGetAll).toHaveBeenCalledWith('books', {}); // verifica que el método haya sido llamado con los argumentos esperados
+      expect(books[0]).toHaveProperty('_id');
+      expect(books[0]).toEqual(fakeBooks[0]);
     });
   });
 });
