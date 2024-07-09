@@ -1,0 +1,32 @@
+name: API CI
+
+# on: [push] # cuando se hagan push en cada rama se ejecutará el CI -> para repositorios que no sean de tipo monorepo, es decir, que no tengan varios proyectos en un mismo repositorio
+on:
+  push:
+    paths:
+      - "./api/**" # cuando se hagan push en la carpeta api
+      - ".github/workflows/api-ci.yml" # cuando se hagan push en el archivo de configuración de CI
+
+defaults:
+  run:
+    working-directory: ./api
+
+jobs:
+  unit-test: # nombre del job
+    runs-on: ubuntu-latest # sistema operativo en el que se ejecutará el CI
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2 # acción que permite clonar el repositorio
+      - name: Use Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 20.x
+          cache: 'npm'
+          cache-dependency-path: ./api/package-lock.json
+      - name: Install dependencies
+        shell: bash
+        # run: npm install # comando para instalar las dependencias
+        run: npm ci # comando para instalar las dependencias en un entorno de integración continua
+      - name: Run unit tests
+        shell: bash
+        run: npm test
