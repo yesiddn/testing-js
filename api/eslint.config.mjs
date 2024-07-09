@@ -1,4 +1,4 @@
-import globals, { jest } from "globals";
+import globals from "globals";
 import pluginJs from "@eslint/js";
 
 export default [
@@ -6,15 +6,18 @@ export default [
     files: ["**/*.js"],
     languageOptions: {
       // Config
-      sourceType: "module",
+      sourceType: "commonjs",
     },
   },
   {
     languageOptions: {
       globals: {
-        jest: globals.jest,
-        test: globals.jest.test,
-        expect: globals.jest.expect,
+        jest: "readonly",
+        test: "readonly",
+        expect: "readonly",
+        describe: "readonly",
+        beforeEach: "readonly",
+        process: "readonly",
       },
     },
   },
