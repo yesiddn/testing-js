@@ -1,5 +1,4 @@
 import globals from "globals";
-import jest from "eslint-plugin-jest";
 import pluginJs from "@eslint/js";
 
 export default [
