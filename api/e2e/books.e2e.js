@@ -16,7 +16,7 @@ describe('Test for books', () => {
 
   beforeAll(() => {
     app = createApp();
-    server = app.listen(3001);
+    server = app.listen(3000);
   });
 
   afterAll(async () => {

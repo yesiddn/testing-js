@@ -16,7 +16,7 @@ describe('Test for books', () => {
 
   beforeAll(async () => {
     app = createApp();
-    server = app.listen(3001);
+    server = app.listen(3000);
 
     const client = new MongoClient(MONGO_URI, {
       useNewUrlParser: true,
